@@ -124,7 +124,7 @@ class Client(object):
             0 is a special value which means "all channels".
 
         pixels: A list of 3-tuples representing rgb colors.
-            Each value in the tuple should be in the range 0-255 inclusive. 
+            Each value in the tuple should be in the range 0-255 inclusive.
             For example: [(255, 255, 255), (0, 0, 0), (127, 0, 0)]
             Floats will be rounded down to integers.
             Values outside the legal range will be clamped.
@@ -146,16 +146,19 @@ class Client(object):
             return False
 
         # build OPC message
-        len_hi_byte = int(len(pixels)*3 / 256)
-        len_lo_byte = (len(pixels)*3) % 256
         command = 0  # set pixel colors from openpixelcontrol.org
+        header = struct.pack(">BBH", channel, command, len(pixels)*3)
 
-        header = struct.pack("BBBB", channel, command, len_hi_byte, len_lo_byte)
-
-        pieces = [ struct.pack( "BBB",
-                     min(255, max(0, int(r))),
-                     min(255, max(0, int(g))),
-                     min(255, max(0, int(b)))) for r, g, b in pixels ]
+        if isinstance(pixels[0], int):
+            # 24-bit hex integer, pack as a 4-byte int then slice out the
+            # first byte to get 3-byte rgb
+            pieces = [struct.pack('>I', p)[1:] for p in pixels]
+        else:
+            # assume an rgb tuple
+            pieces = [ struct.pack( "BBB",
+                         min(255, max(0, int(r))),
+                         min(255, max(0, int(g))),
+                         min(255, max(0, int(b)))) for r, g, b in pixels ]
 
         if sys.version_info[0] == 3:
             # bytes!
@@ -189,15 +192,15 @@ class Client(object):
         if not is_connected:
             self._debug('set_interpolation: not connected.  ignoring reconfiguration.')
             return False
-    
+
         #build firmaware configuration message as documented on
         #https://github.com/scanlime/fadecandy/blob/master/doc/fc_protocol_opc.md#set-firmware-configuration
         if enabled:
             config_bit = 0
         else:
             config_bit = 2
-        message = struct.pack('BBBBBBBBB', 0, 255, 0, 5, 0, 1, 0, 2, config_bit)
-    
+        message = struct.pack('>BBHHHB', 0, 255, 5, 1, 2, config_bit)
+
         self._debug('set_interpolation: sending firmware configuration')
         try:
             self._socket.send(message)

@@ -11,8 +11,7 @@ client = opc.Client('localhost:7890')
 black = [ (0,0,0) ] * numLEDs
 
 if len(sys.argv) == 2:
-    c = int(sys.argv[1], 16)
-    color = (c >> 16, (c >> 8) & 0xff, c & 0xff)
+    color = int(sys.argv[1], 16)
 elif len(sys.argv) == 4:
     color = tuple(int(x, 0) for x in sys.argv[1:4])
 else:
