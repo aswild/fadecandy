@@ -200,6 +200,7 @@ void FCServer::usbDeviceArrived(libusb_device *device)
         return;
     }
 
+    usleep(100000); // give udev time to apply permissions
     int r = dev->open();
     if (r < 0) {
         if (mVerbose) {

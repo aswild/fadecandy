@@ -74,10 +74,10 @@ ifneq ("$(DEBUG)", "")
 	CPPFLAGS += -g -DDEBUG -DENABLE_LOGGING
 	PACK_CMD :=
 else
-	# Optimized build	
+	# Optimized build
 	STRIP_CMD := strip $(TARGET)
-	CPPFLAGS += -Os -DNDEBUG
-	LDFLAGS += -Os
+	CPPFLAGS += -O2 -DNDEBUG
+	LDFLAGS += -O2
 endif
 
 ###########################################################################
@@ -185,7 +185,7 @@ OBJS := $(CPP_FILES:.cpp=.o) $(C_FILES:.c=.o)
 print-%: ; @echo $* = $($*)
 all: print-SYS $(TARGET)
 
-# FIXME: A race condition between objects regeneration and their source mtime in make ? 
+# FIXME: A race condition between objects regeneration and their source mtime in make ?
 $(TARGET): $(SUBMODULES_TARGETS) $(OBJS)
 	$(CXX) $(LDFLAGS) -o $@ $(OBJS) $(LIBS)
 	$(STRIP_CMD)
@@ -200,7 +200,7 @@ src/httpdocs.cpp: http/* http/js/* http/css/*
 clean:
 	rm -f $(CLEAN_FILES) $(TARGET)
 
-# Git submodules handling. TODO: Add submodules cleaning to clean target 
+# Git submodules handling. TODO: Add submodules cleaning to clean target
 SUBMODULES_TARGETS:=$(shell git config -f ../.gitmodules --get-regexp submodule'.*\.'path|cut -d ' ' -f 2|cut -d '/' -f 2)
 $(SUBMODULES_TARGETS):
 	cd .. && git submodule update --init -- server/$@ && cd server/$@ && git checkout -f HEAD && git clean -dfx
