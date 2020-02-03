@@ -26,7 +26,7 @@
 #if defined(WIN32) || defined(_WIN32)
 #define inline __inline
 #else
-#include "config.h"
+//#include "config.h"
 #endif
 #endif
 
