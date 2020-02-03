@@ -27,12 +27,16 @@ SYS := $(shell $(CXX) -dumpmachine)
 
 ifneq (, $(findstring linux, $(SYS)))
 UNAME := Linux
+CPPFLAGS += -DOS_LINUX -pthread
+LIBS += -pthread
 endif
 ifneq (, $(findstring mingw, $(SYS)))
 UNAME := MINGW32
+CPPFLAGS += -DOS_WINDOWS
 endif
 ifneq (, $(findstring darwin, $(SYS)))
 UNAME := Darwin
+CPPFLAGS += -DOS_DARWIN
 endif
 
 MINGW := $(findstring MINGW32, $(UNAME))
@@ -116,60 +120,9 @@ else
 endif
 
 ###########################################################################
-# Built-in libusbx
-
-C_FILES += \
-	libusbx/libusb/core.c \
-	libusbx/libusb/descriptor.c \
-	libusbx/libusb/hotplug.c \
-	libusbx/libusb/io.c \
-	libusbx/libusb/strerror.c \
-	libusbx/libusb/sync.c
-
-ifeq ($(UNAME), Darwin)
-	# Mac OS X
-
-	C_FILES += \
-		libusbx/libusb/os/darwin_usb.c \
-		libusbx/libusb/os/poll_posix.c \
-		libusbx/libusb/os/threads_posix.c
-
-	LIBS += -framework CoreFoundation -framework IOKit -lobjc
-	CPPFLAGS += -DOS_DARWIN -DTHREADS_POSIX -DPOLL_NFDS_TYPE=nfds_t \
-		-DLIBUSB_CALL= -DDEFAULT_VISIBILITY= -DHAVE_GETTIMEOFDAY
-endif
-
-ifeq ($(UNAME), Linux)
-	# Linux
-
-	C_FILES += \
-		libusbx/libusb/os/linux_usbfs.c \
-		libusbx/libusb/os/linux_netlink.c \
-		libusbx/libusb/os/poll_posix.c \
-		libusbx/libusb/os/threads_posix.c
-
-	LIBS += -lpthread -lrt
-	CPPFLAGS += -DOS_LINUX -DTHREADS_POSIX -DPOLL_NFDS_TYPE=nfds_t \
-		-DLIBUSB_CALL= -DDEFAULT_VISIBILITY= -DHAVE_GETTIMEOFDAY -DHAVE_POLL_H \
-		-DHAVE_ASM_TYPES_H -DHAVE_SYS_SOCKET_H -DHAVE_LINUX_NETLINK_H -DHAVE_LINUX_FILTER_H
-endif
-
-ifneq ("$(MINGW)", "")
-	# Windows
-
-	C_FILES += \
-		libusbx/libusb/os/windows_usb.c \
-		libusbx/libusb/os/poll_windows.c \
-		libusbx/libusb/os/threads_windows.c
-
-	LIBS += -lws2_32
-	CPPFLAGS += -DOS_WINDOWS -DPOLL_NFDS_TYPE=int -DDEFAULT_VISIBILITY= -DHAVE_GETTIMEOFDAY
-endif
-
-INCLUDES += -Ilibusbx/libusb
-CLEAN_FILES += \
-	libusbx/libusb/*.d libusbx/libusb/*.o \
-	libusbx/libusb/os/*.d libusbx/libusb/os/*.o
+# libusb
+INCLUDES += $(shell pkg-config --cflags libusb-1.0)
+LIBS += $(shell pkg-config --libs libusb-1.0)
 
 ###########################################################################
 # Build Rules
@@ -186,7 +139,7 @@ print-%: ; @echo $* = $($*)
 all: print-SYS $(TARGET)
 
 # FIXME: A race condition between objects regeneration and their source mtime in make ?
-$(TARGET): $(SUBMODULES_TARGETS) $(OBJS)
+$(TARGET): $(OBJS)
 	$(CXX) $(LDFLAGS) -o $@ $(OBJS) $(LIBS)
 	$(STRIP_CMD)
 	$(PACK_CMD)
@@ -200,10 +153,4 @@ src/httpdocs.cpp: http/* http/js/* http/css/*
 clean:
 	rm -f $(CLEAN_FILES) $(TARGET)
 
-# Git submodules handling. TODO: Add submodules cleaning to clean target
-SUBMODULES_TARGETS:=$(shell git config -f ../.gitmodules --get-regexp submodule'.*\.'path|cut -d ' ' -f 2|cut -d '/' -f 2)
-$(SUBMODULES_TARGETS):
-	cd .. && git submodule update --init -- server/$@ && cd server/$@ && git checkout -f HEAD && git clean -dfx
-submodules: $(SUBMODULES_TARGETS)
-
-.PHONY: submodules $(SUBMODULES_TARGETS) clean all
+.PHONY: clean all
