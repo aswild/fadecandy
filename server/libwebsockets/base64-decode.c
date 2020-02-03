@@ -45,8 +45,8 @@
 
 static const char encode[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 			     "abcdefghijklmnopqrstuvwxyz0123456789+/";
-static const char decode[] = "|$$$}rstuvwxyz{$$$$$$$>?@ABCDEFGHIJKLMNOPQRSTUVW"
-			     "$$$$$$XYZ[\\]^_`abcdefghijklmnopq";
+//static const char decode[] = "|$$$}rstuvwxyz{$$$$$$$>?@ABCDEFGHIJKLMNOPQRSTUVW"
+//			     "$$$$$$XYZ[\\]^_`abcdefghijklmnopq";
 
 LWS_VISIBLE int
 lws_b64_encode_string(const char *in, int in_len, char *out, int out_size)

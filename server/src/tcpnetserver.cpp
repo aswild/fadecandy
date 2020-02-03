@@ -576,7 +576,7 @@ void TcpNetServer::relayMessage(OPC::Message &msg)
         buffer[1] = (unsigned char)msg.command;
         buffer[2] = (unsigned char)msg.lenHigh;
         buffer[3] = (unsigned char)msg.lenLow;
-        for (int i=0; i < msg.length(); i++) {
+        for (unsigned i=0; i < msg.length(); i++) {
             buffer[headerLen+i] = (unsigned char)msg.data[i];
         }
         for (std::set<libwebsocket*>::iterator cli = mRelayClients.begin(); cli != mRelayClients.end(); ++cli) {

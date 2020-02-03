@@ -2,8 +2,8 @@
 # Makefile for fcserver
 #
 
-AM_CFLAGS = -Wall -pthread
-AM_CXXFLAGS = $(AM_CFLAGS)
+AM_CFLAGS = -Wall -Werror -pthread
+AM_CXXFLAGS = $(AM_CFLAGS) -Wno-class-memaccess
 
 # avoid warnings about 'u' being the default
 ARFLAGS = cr

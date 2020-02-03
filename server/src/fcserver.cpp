@@ -53,11 +53,8 @@ FCServer::FCServer(rapidjson::Document &config)
     if (mListen.IsArray() && mListen.Size() == 2) {
         const Value &host = mListen[0u];
         const Value &port = mListen[1];
-        const char *hostStr = 0;
 
-        if (host.IsString()) {
-            hostStr = host.GetString();
-        } else if (!host.IsNull()) {
+        if (!host.IsString() && !host.IsNull()) {
             mError << "Hostname in 'listen' must be null (any) or a hostname string.\n";
         }
 
@@ -75,11 +72,8 @@ FCServer::FCServer(rapidjson::Document &config)
     if (mRelay.IsArray() && mRelay.Size() == 2) {
         const Value &host = mRelay[0u];
         const Value &port = mRelay[1];
-        const char *hostStr = 0;
 
-        if (host.IsString()) {
-            hostStr = host.GetString();
-        } else if (!host.IsNull()) {
+        if (!host.IsString() && !host.IsNull()) {
             mError << "Hostname in 'relay' must be null (any) or a hostname string.\n";
         }
 
@@ -525,13 +519,11 @@ void FCServer::jsonListConnectedDevices(rapidjson::Document &message)
     Value &list = message["devices"];
 
     for (unsigned i = 0; i != mUSBDevices.size(); i++) {
-        USBDevice *usbDev = mUSBDevices[i];
         list.PushBack(rapidjson::kObjectType, message.GetAllocator());
         mUSBDevices[i]->describe(list[i], message.GetAllocator());
     }
 
     for (unsigned i = 0; i != mSPIDevices.size(); i++) {
-        SPIDevice *spiDev = mSPIDevices[i];
         list.PushBack(rapidjson::kObjectType, message.GetAllocator());
         mSPIDevices[i]->describe(list[i], message.GetAllocator());
     }

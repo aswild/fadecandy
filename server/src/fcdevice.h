@@ -44,7 +44,7 @@ public:
     virtual void flush();
     virtual void describe(rapidjson::Value &object, Allocator &alloc);
 
-    static const unsigned NUM_PIXELS = 512;
+    static const int NUM_PIXELS = 512;
 
     // Send current buffer contents
     void writeFramebuffer();
@@ -55,13 +55,13 @@ public:
     }
 
 private:
-    static const unsigned PIXELS_PER_PACKET = 21;
-    static const unsigned LUT_ENTRIES_PER_PACKET = 31;
-    static const unsigned FRAMEBUFFER_PACKETS = 25;
-    static const unsigned LUT_PACKETS = 25;
-    static const unsigned LUT_ENTRIES = 257;
-    static const unsigned OUT_ENDPOINT = 1;
-    static const unsigned MAX_FRAMES_PENDING = 2;
+    static const int PIXELS_PER_PACKET = 21;
+    static const int LUT_ENTRIES_PER_PACKET = 31;
+    static const int FRAMEBUFFER_PACKETS = 25;
+    static const int LUT_PACKETS = 25;
+    static const int LUT_ENTRIES = 257;
+    static const int OUT_ENDPOINT = 1;
+    static const int MAX_FRAMES_PENDING = 2;
 
     static const uint8_t TYPE_FRAMEBUFFER = 0x00;
     static const uint8_t TYPE_LUT = 0x40;
