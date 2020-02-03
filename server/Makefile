@@ -89,14 +89,14 @@ INCLUDES += -I.
 # Built-in libwebsockets
 
 C_FILES += \
-	libwebsockets/lib/handshake.c \
-	libwebsockets/lib/libwebsockets.c \
-	libwebsockets/lib/parsers.c \
-	libwebsockets/lib/server-handshake.c \
-	libwebsockets/lib/server.c \
-	libwebsockets/lib/output.c \
-	libwebsockets/lib/sha-1.c \
-	libwebsockets/lib/base64-decode.c
+	libwebsockets/handshake.c \
+	libwebsockets/libwebsockets.c \
+	libwebsockets/parsers.c \
+	libwebsockets/server-handshake.c \
+	libwebsockets/server.c \
+	libwebsockets/output.c \
+	libwebsockets/sha-1.c \
+	libwebsockets/base64-decode.c
 
 # For lws_get_library_version(), which we don't use.
 CPPFLAGS += -DLWS_LIBRARY_VERSION= -DLWS_BUILD_HASH=
@@ -104,8 +104,8 @@ CPPFLAGS += -DLWS_LIBRARY_VERSION= -DLWS_BUILD_HASH=
 # Disable a bunch of features
 CPPFLAGS += -DLWS_NO_EXTENSIONS -DLWS_NO_CLIENT -DLWS_NO_WSAPOLL
 
-INCLUDES += -Ilibwebsockets/lib
-CLEAN_FILES += libwebsockets/lib/*.d libwebsockets/lib/*.o
+INCLUDES += -Ilibwebsockets
+CLEAN_FILES += libwebsockets/*.d libwebsockets/*.o
 
 ifneq ("$(MINGW)", "")
 	# Windows
