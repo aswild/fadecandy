@@ -102,8 +102,6 @@ int main(int argc, char **argv)
             "configuration. For more information about the config file\n"
             "format, see the README.\n"
             "\n"
-            "%s"
-            "\n"
             "Copyright (c) 2013 Micah Elizabeth Scott <micah@scanlime.org>\n"
             "https://github.com/scanlime/fadecandy\n"
             "\n"
@@ -111,8 +109,7 @@ int main(int argc, char **argv)
             "Public License. Full license information and source code are\n"
             "available at the URL above.\n"
             "\n",
-            kFCServerVersion,
-            kDefaultConfig);
+            kFCServerVersion);
         return 1;
     }
 
