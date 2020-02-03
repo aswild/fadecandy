@@ -3,7 +3,7 @@ project(fcserver)
 
 set(EXECUTABLE_NAME "fcserver")
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/contrib)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
@@ -279,11 +279,11 @@ if (WITH_INSTALL_TARGETS)
             # http://www.reactivated.net/writing_udev_rules.html
 
             # Run as specified user in FCSERVER_USER.
-            configure_file("${PROJECT_SOURCE_DIR}/cmake/fcserver-user.service.in"
+            configure_file("${PROJECT_SOURCE_DIR}/contrib/fcserver-user.service.in"
                            "${SYSTEMD_UNIT_NAME}")
 
             # Creates the user we want to run as after the debian package is installed.
-            configure_file("${PROJECT_SOURCE_DIR}/cmake/debian/postinst.in"
+            configure_file("${PROJECT_SOURCE_DIR}/contrib/debian/postinst.in"
                            "${PROJECT_BINARY_DIR}/debian/postinst" @ONLY)
 
             set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${PROJECT_BINARY_DIR}/debian/postinst")
@@ -298,7 +298,7 @@ if (WITH_INSTALL_TARGETS)
             #        COMPONENT CreateUser OPTIONAL)
         else()
             # Run as systemd default user.
-            configure_file("${PROJECT_SOURCE_DIR}/cmake/fcserver.service.in"
+            configure_file("${PROJECT_SOURCE_DIR}/contrib/fcserver.service.in"
                            "${SYSTEMD_UNIT_NAME}")
         endif()
 
