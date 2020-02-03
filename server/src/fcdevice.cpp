@@ -1,18 +1,18 @@
 /*
  * Fadecandy device interface
- * 
+ *
  * Copyright (c) 2013 Micah Elizabeth Scott
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
  * the Software without restriction, including without limitation the rights to
  * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
  * the Software, and to permit persons to whom the Software is furnished to do so,
  * subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
  * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
@@ -128,7 +128,7 @@ int FCDevice::open()
     unsigned minor = mDD.bcdDevice & 0xFF;
     snprintf(mVersionString, sizeof mVersionString, "%x.%02x", major, minor);
 
-    return libusb_get_string_descriptor_ascii(mHandle, mDD.iSerialNumber, 
+    return libusb_get_string_descriptor_ascii(mHandle, mDD.iSerialNumber,
         (uint8_t*)mSerialBuffer, sizeof mSerialBuffer);
 }
 
@@ -150,7 +150,7 @@ void FCDevice::writeFirmwareConfiguration(const Value &config)
     if (!config.IsObject()) {
         std::clog << "Firmware configuration is not a JSON object\n";
         return;
-    }        
+    }
 
     const Value &led = config["led"];
     const Value &dither = config["dither"];
@@ -396,7 +396,7 @@ void FCDevice::writeMessage(Document &msg)
 
     if (!strcmp(type, "device_options")) {
         /*
-         * TODO: Eventually this should turn into the same thing as 
+         * TODO: Eventually this should turn into the same thing as
          *       loadConfiguration() and it shouldn't be device-specific,
          *       but for now most of fcserver assumes the configuration is static.
          */

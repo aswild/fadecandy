@@ -4,19 +4,19 @@
  * This is a TCP server which accepts either Open Pixel Control, HTTP, or WebSockets
  * connections on a single port. We use a fork of libwebsockets which supports serving
  * external non-HTTP protocols via a low-level receive callback.
- * 
+ *
  * Copyright (c) 2013 Micah Elizabeth Scott
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
  * the Software without restriction, including without limitation the rights to
  * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
  * the Software, and to permit persons to whom the Software is furnished to do so,
  * subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
  * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
@@ -275,7 +275,7 @@ int TcpNetServer::opcRead(libwebsocket_context *context, libwebsocket *wsi,
 
     OPCBuffer *opcb;
     uint8_t *buffer;
-    unsigned bufferLength;    
+    unsigned bufferLength;
 
     // Allocate the buffer we use for OPC reassembly and protocol-detect.
     if (client.opcBuffer == NULL) {
