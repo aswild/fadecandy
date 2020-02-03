@@ -886,12 +886,11 @@ handle_first:
 		 */
 
 		if (!wsi->protocol->rx_buffer_size &&
-			 		wsi->u.ws.rx_user_buffer_head !=
-			 				  LWS_MAX_SOCKET_IO_BUF)
+					wsi->u.ws.rx_user_buffer_head != LWS_MAX_SOCKET_IO_BUF)
 			break;
 		else
 			if (wsi->protocol->rx_buffer_size &&
-					wsi->u.ws.rx_user_buffer_head !=
+					(size_t)wsi->u.ws.rx_user_buffer_head !=
 						  wsi->protocol->rx_buffer_size)
 			break;
 

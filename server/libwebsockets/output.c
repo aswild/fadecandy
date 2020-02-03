@@ -150,7 +150,7 @@ int lws_issue_raw(struct libwebsocket *wsi, unsigned char *buf, size_t len)
 	} else {
 #endif
 		n = send(wsi->sock, buf, len, MSG_NOSIGNAL);
-		lws_latency(context, wsi, "send lws_issue_raw", n, n == len);
+		lws_latency(context, wsi, "send lws_issue_raw", n, (size_t)n == len);
 		if (n < 0) {
 			lwsl_debug("ERROR writing len %d to skt %d\n", len, n);
 			return -1;
@@ -183,7 +183,7 @@ handle_truncated_send:
 		return n;
 	}
 
-	if (n < len) {
+	if ((size_t)n < len) {
 		if (wsi->u.ws.clean_buffer)
 			/*
 			 * This buffer unaffected by extension rewriting.
@@ -586,7 +586,7 @@ send_raw:
 	if (n < 0)
 		return n;
 
-	if (n == len + pre + post) {
+	if ((size_t)n == len + pre + post) {
 		/* everything in the buffer was handled (or rebuffered...) */
 		wsi->u.ws.inside_frame = 0;
 		return orig_len;

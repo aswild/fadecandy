@@ -894,7 +894,7 @@ libwebsocket_service_fd(struct libwebsocket_context *context,
 
 	gettimeofday(&tv, NULL);
 
-	if (context->last_timeout_check_s != tv.tv_sec) {
+	if (context->last_timeout_check_s != (unsigned long)tv.tv_sec) {
 		context->last_timeout_check_s = tv.tv_sec;
 
 		#ifndef WIN32

@@ -119,14 +119,14 @@ LWS_VISIBLE LWS_EXTERN void lwsl_hexdump(void *buf, size_t len);
 
 #else /* no debug */
 
-#define lwsl_info(...)
-#define lwsl_debug(...)
-#define lwsl_parser(...)
-#define lwsl_header(...)
-#define lwsl_ext(...)
-#define lwsl_client(...)
-#define lwsl_latency(...)
-#define lwsl_hexdump(a, b)
+#define lwsl_info(...)      do {} while(0)
+#define lwsl_debug(...)     do {} while(0)
+#define lwsl_parser(...)    do {} while(0)
+#define lwsl_header(...)    do {} while(0)
+#define lwsl_ext(...)       do {} while(0)
+#define lwsl_client(...)    do {} while(0)
+#define lwsl_latency(...)   do {} while(0)
+#define lwsl_hexdump(a, b)  do {} while(0)
 
 #endif
 
