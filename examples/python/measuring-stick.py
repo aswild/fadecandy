@@ -9,9 +9,7 @@ import opc, time
 numStrings = 8
 client = opc.Client('localhost:7890')
 
-string = [ (128, 128, 128) ] * 64
-for i in range(7):
-	string[10 * i] = (128, 255, 128)
+string = [0x00ff00 if (i+1)%10 == 0 else 0x7f7f7f for i in range(64)]
 
 # Immediately display new frame
 pixels = string * numStrings
