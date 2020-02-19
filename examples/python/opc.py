@@ -152,20 +152,15 @@ class Client(object):
         if isinstance(pixels[0], int):
             # 24-bit hex integer, pack as a 4-byte int then slice out the
             # first byte to get 3-byte rgb
-            pieces = [struct.pack('>I', p)[1:] for p in pixels]
+            pieces = (struct.pack('>I', p)[1:] for p in pixels)
         else:
             # assume an rgb tuple
-            pieces = [ struct.pack( "BBB",
+            pieces = ( struct.pack( "BBB",
                          min(255, max(0, int(r))),
                          min(255, max(0, int(g))),
-                         min(255, max(0, int(b)))) for r, g, b in pixels ]
+                         min(255, max(0, int(b)))) for r, g, b in pixels )
 
-        if sys.version_info[0] == 3:
-            # bytes!
-            message = header + b''.join(pieces)
-        else:
-            # strings!
-            message = header + ''.join(pieces)
+        message = header + b''.join(pieces)
 
         self._debug('put_pixels: sending pixels to server')
         try:
